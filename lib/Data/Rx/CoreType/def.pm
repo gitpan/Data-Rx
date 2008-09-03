@@ -1,10 +1,10 @@
 use strict;
 use warnings;
 package Data::Rx::CoreType::def;
-our $VERSION = '0.001';
+our $VERSION = '0.002';
 
 use base 'Data::Rx::CoreType';
-# ABSTRACT: Rx '//def' type
+# ABSTRACT: the Rx //def type
 
 sub check {
   my ($self, $value) = @_;
@@ -22,11 +22,11 @@ __END__
 
 =head1 NAME
 
-Data::Rx::CoreType::def - Rx '//def' type
+Data::Rx::CoreType::def - the Rx //def type
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 AUTHOR
 

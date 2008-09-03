@@ -1,10 +1,10 @@
 use strict;
 use warnings;
 package Data::Rx::CoreType::nil;
-our $VERSION = '0.001';
+our $VERSION = '0.002';
 
 use base 'Data::Rx::CoreType';
-# ABSTRACT: Rx '//nil' type
+# ABSTRACT: the Rx //nil type
 
 sub check {
   my ($self, $value) = @_;
@@ -22,11 +22,11 @@ __END__
 
 =head1 NAME
 
-Data::Rx::CoreType::nil - Rx '//nil' type
+Data::Rx::CoreType::nil - the Rx //nil type
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 AUTHOR
 

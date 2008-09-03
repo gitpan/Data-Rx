@@ -1,10 +1,10 @@
 use strict;
 use warnings;
 package Data::Rx::CoreType::fail;
-our $VERSION = '0.001';
+our $VERSION = '0.002';
 
 use base 'Data::Rx::CoreType';
-# ABSTRACT: Rx '//fail' type
+# ABSTRACT: the Rx //fail type
 
 sub check { return}
 
@@ -18,11 +18,11 @@ __END__
 
 =head1 NAME
 
-Data::Rx::CoreType::fail - Rx '//fail' type
+Data::Rx::CoreType::fail - the Rx //fail type
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 AUTHOR
 

@@ -9,11 +9,12 @@ WriteMakefile(
   NAME      => 'Data::Rx',
   AUTHOR    => 'Ricardo\ SIGNES\ \<rjbs\@cpan\.org\>',
   ABSTRACT  => 'perl implementation of Rx schema system',
-  VERSION   => '0.001',
+  VERSION   => '0.002',
   EXE_FILES => [ qw() ],
   (eval { ExtUtils::MakeMaker->VERSION(6.21) } ? (LICENSE => 'perl') : ()),
   PREREQ_PM    => {
     "Scalar::Util" => '0',
+    "Module::Pluggable" => '3.7',
     "File::Find::Rule" => '0',
     "Number::Tolerant" => '0',
     "JSON::XS" => '0',

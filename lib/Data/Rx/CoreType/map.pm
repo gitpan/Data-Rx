@@ -1,10 +1,10 @@
 use strict;
 use warnings;
 package Data::Rx::CoreType::map;
-our $VERSION = '0.001';
+our $VERSION = '0.002';
 
 use base 'Data::Rx::CoreType';
-# ABSTRACT: Rx '//map' type
+# ABSTRACT: the Rx //map type
 
 use Scalar::Util ();
 
@@ -47,11 +47,11 @@ __END__
 
 =head1 NAME
 
-Data::Rx::CoreType::map - Rx '//map' type
+Data::Rx::CoreType::map - the Rx //map type
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 AUTHOR
 

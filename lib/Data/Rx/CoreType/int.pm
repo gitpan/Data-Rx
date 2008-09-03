@@ -1,10 +1,10 @@
 use strict;
 use warnings;
 package Data::Rx::CoreType::int;
-our $VERSION = '0.001';
+our $VERSION = '0.002';
 
 use base 'Data::Rx::CoreType::num';
-# ABSTRACT: Rx '//int' type
+# ABSTRACT: the Rx //int type
 
 sub subname   { 'int' }
 
@@ -23,11 +23,11 @@ __END__
 
 =head1 NAME
 
-Data::Rx::CoreType::int - Rx '//int' type
+Data::Rx::CoreType::int - the Rx //int type
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 AUTHOR
 

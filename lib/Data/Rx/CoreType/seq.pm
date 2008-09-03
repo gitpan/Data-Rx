@@ -1,10 +1,10 @@
 use strict;
 use warnings;
 package Data::Rx::CoreType::seq;
-our $VERSION = '0.001';
+our $VERSION = '0.002';
 
 use base 'Data::Rx::CoreType';
-# ABSTRACT: Rx '//seq' type
+# ABSTRACT: the Rx //seq type
 
 use Scalar::Util ();
 
@@ -60,11 +60,11 @@ __END__
 
 =head1 NAME
 
-Data::Rx::CoreType::seq - Rx '//seq' type
+Data::Rx::CoreType::seq - the Rx //seq type
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 AUTHOR
 

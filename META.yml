@@ -10,9 +10,10 @@ requires:
   File::Find::Rule: 0
   JSON::XS: 0
   List::Util: 0
+  Module::Pluggable: 3.7
   Module::Pluggable::Object: 0
   Number::Tolerant: 0
   Scalar::Util: 0
   Test::More: 0
   autodie: 0
-version: 0.001
+version: 0.002

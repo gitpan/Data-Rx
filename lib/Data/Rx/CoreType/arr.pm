@@ -1,10 +1,10 @@
 use strict;
 use warnings;
 package Data::Rx::CoreType::arr;
-our $VERSION = '0.001';
+our $VERSION = '0.002';
 
 use base 'Data::Rx::CoreType';
-# ABSTRACT: Rx '//arr' type
+# ABSTRACT: the Rx //arr type
 
 use Scalar::Util ();
 
@@ -53,11 +53,11 @@ __END__
 
 =head1 NAME
 
-Data::Rx::CoreType::arr - Rx '//arr' type
+Data::Rx::CoreType::arr - the Rx //arr type
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 AUTHOR
 

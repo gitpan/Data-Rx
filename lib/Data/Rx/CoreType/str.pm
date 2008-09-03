@@ -1,10 +1,10 @@
 use strict;
 use warnings;
 package Data::Rx::CoreType::str;
-our $VERSION = '0.001';
+our $VERSION = '0.002';
 
 use base 'Data::Rx::CoreType';
-# ABSTRACT: Rx '//str' type
+# ABSTRACT: the Rx //str type
 
 use Data::Rx::Util;
 
@@ -52,11 +52,11 @@ __END__
 
 =head1 NAME
 
-Data::Rx::CoreType::str - Rx '//str' type
+Data::Rx::CoreType::str - the Rx //str type
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 AUTHOR
 

@@ -1,10 +1,10 @@
 use strict;
 use warnings;
 package Data::Rx::CoreType::all;
-our $VERSION = '0.001';
+our $VERSION = '0.002';
 
 use base 'Data::Rx::CoreType';
-# ABSTRACT: Rx '//all' type
+# ABSTRACT: the Rx //all type
 
 use Scalar::Util ();
 
@@ -45,11 +45,11 @@ __END__
 
 =head1 NAME
 
-Data::Rx::CoreType::all - Rx '//all' type
+Data::Rx::CoreType::all - the Rx //all type
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 AUTHOR
 
