@@ -1,14 +1,14 @@
 use strict;
 use warnings;
 package Data::Rx::CoreType::str;
-our $VERSION = '0.002';
+our $VERSION = '0.003';
 
 use base 'Data::Rx::CoreType';
 # ABSTRACT: the Rx //str type
 
 use Data::Rx::Util;
 
-sub new {
+sub new_checker {
   my ($class, $arg, $rx) = @_;
   my $self = {};
 
@@ -56,7 +56,7 @@ Data::Rx::CoreType::str - the Rx //str type
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 AUTHOR
 

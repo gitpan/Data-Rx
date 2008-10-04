@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 package Data::Rx::CoreType::map;
-our $VERSION = '0.002';
+our $VERSION = '0.003';
 
 use base 'Data::Rx::CoreType';
 # ABSTRACT: the Rx //map type
@@ -10,9 +10,9 @@ use Scalar::Util ();
 
 sub subname   { 'map' }
 
-sub new {
+sub new_checker {
   my ($class, $arg, $rx) = @_;
-  my $self = $class->SUPER::new({}, $rx);
+  my $self = $class->SUPER::new_checker({}, $rx);
 
   Carp::croak("unknown arguments to new") unless
   Data::Rx::Util->_x_subset_keys_y($arg, { values => 1 });
@@ -51,7 +51,7 @@ Data::Rx::CoreType::map - the Rx //map type
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 AUTHOR
 

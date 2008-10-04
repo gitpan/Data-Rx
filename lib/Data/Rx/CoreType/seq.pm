@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 package Data::Rx::CoreType::seq;
-our $VERSION = '0.002';
+our $VERSION = '0.003';
 
 use base 'Data::Rx::CoreType';
 # ABSTRACT: the Rx //seq type
@@ -10,9 +10,9 @@ use Scalar::Util ();
 
 sub subname   { 'seq' }
 
-sub new {
+sub new_checker {
   my ($class, $arg, $rx) = @_;
-  my $self = $class->SUPER::new({}, $rx);
+  my $self = $class->SUPER::new_checker({}, $rx);
 
   Carp::croak("no contents array given")
     unless $arg->{contents} and (ref $arg->{contents} eq 'ARRAY');
@@ -64,7 +64,7 @@ Data::Rx::CoreType::seq - the Rx //seq type
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 AUTHOR
 

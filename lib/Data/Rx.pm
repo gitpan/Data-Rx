@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 package Data::Rx;
-our $VERSION = '0.002';
+our $VERSION = '0.003';
 
 # ABSTRACT: perl implementation of Rx schema system
 
@@ -39,10 +39,6 @@ sub new {
   $arg ||= {};
   $arg->{prefix} ||= {};
 
-  my $mpo = Module::Pluggable::Object->new(
-    search_path => 'Data::Rx::CoreType',
-  );
-
   my $self = {
     prefix  => {
       $class->__built_in_prefixes,
@@ -53,10 +49,12 @@ sub new {
 
   bless $self => $class;
 
-  my @plugins = $mpo->plugins;
-  for my $plugin (@plugins) {
-    eval "require $plugin; 1" or die;
-    $self->{handler}{ $plugin->type_uri } = $plugin;
+  my @plugins = $self->core_type_plugins;
+
+  $self->register_type_plugin($_) for @plugins;
+
+  if ($arg->{plugins}) {
+    $self->register_type_plugin($_) for @{ $arg->{plugins} };
   }
 
   return $self;
@@ -77,9 +75,28 @@ sub make_schema {
 
   my $schema_arg = {%$schema};
   delete $schema_arg->{type};
-  my $checker = $handler->new($schema_arg, $self);
+  my $checker = $handler->new_checker($schema_arg, $self);
 
   return $checker;
+}
+
+
+sub register_type_plugin {
+  my ($self, $plugin) = @_;
+
+  $self->{handler}{ $plugin->type_uri } = $plugin;
+}
+
+
+sub core_type_plugins { 
+  my ($self) = @_;
+
+  my $mpo = Module::Pluggable::Object->new(
+    search_path => 'Data::Rx::CoreType',
+    require     => 1,
+  );
+
+  my @plugins = $mpo->plugins;
 }
 
 1;
@@ -94,7 +111,7 @@ Data::Rx - perl implementation of Rx schema system
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 SYNOPSIS
 
@@ -136,12 +153,30 @@ Valid arguments are:
 
     prefix - optional; a hashref of prefix strings and values for type shorthand
 
+The prefix hashref should look something like this:
+
+    {
+      'pobox'  => 'tag:pobox.com,1995:rx/core/',
+      'skynet' => 'tag:skynet.mil,1997-08-29:types/rx/',
+    }
+
 =head2 make_schema
 
     my $schema = $rx->make_schema($schema);
 
 This returns a new schema checker (something with a C<check> method) for the
 given Rx input.
+
+=head2 register_type_plugin
+
+    $rx->register_type_plugin($plugin);
+
+Given a type plugin, this registers the plugin with the Data::Rx object.
+Plugins must have a C<type_uri> method and a C<new_checker> method.
+
+=head2 core_type_plugins {
+
+This method returns a list of the plugins for the core Rx types.
 
 =head1 AUTHOR
 

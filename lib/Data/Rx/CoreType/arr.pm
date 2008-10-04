@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 package Data::Rx::CoreType::arr;
-our $VERSION = '0.002';
+our $VERSION = '0.003';
 
 use base 'Data::Rx::CoreType';
 # ABSTRACT: the Rx //arr type
@@ -10,9 +10,9 @@ use Scalar::Util ();
 
 sub subname   { 'arr' }
 
-sub new {
+sub new_checker {
   my ($class, $arg, $rx) = @_;
-  my $self = $class->SUPER::new({}, $rx);
+  my $self = $class->SUPER::new_checker({}, $rx);
 
   Carp::croak("no contents schema given")
     unless $arg->{contents} and (ref $arg->{contents} || 'HASH' eq 'HASH');
@@ -57,7 +57,7 @@ Data::Rx::CoreType::arr - the Rx //arr type
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 AUTHOR
 

@@ -1,11 +1,11 @@
 use strict;
 use warnings;
 package Data::Rx::CoreType;
-our $VERSION = '0.002';
+our $VERSION = '0.003';
 
 # ABSTRACT: base class for core Rx types
 
-sub new {
+sub new_checker {
   my ($class, $arg, $rx) = @_;
   Carp::croak "$class does not take check arguments" if %$arg;
   bless { rx => $rx } => $class;
@@ -27,7 +27,7 @@ Data::Rx::CoreType - base class for core Rx types
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 AUTHOR
 

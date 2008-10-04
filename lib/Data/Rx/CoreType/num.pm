@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 package Data::Rx::CoreType::num;
-our $VERSION = '0.002';
+our $VERSION = '0.003';
 
 use base 'Data::Rx::CoreType';
 # ABSTRACT: the Rx //num type
@@ -19,7 +19,7 @@ sub _val_re {
        . '\z';
 }
 
-sub new {
+sub new_checker {
   my ($class, $arg, $rx) = @_;
   my $self = {};
 
@@ -75,7 +75,7 @@ Data::Rx::CoreType::num - the Rx //num type
 
 =head1 VERSION
 
-version 0.002
+version 0.003
 
 =head1 AUTHOR
 
