@@ -9,7 +9,7 @@ WriteMakefile(
   NAME      => 'Data::Rx',
   AUTHOR    => 'Ricardo\ SIGNES\ \<rjbs\@cpan\.org\>',
   ABSTRACT  => 'perl implementation of Rx schema system',
-  VERSION   => '0.003',
+  VERSION   => '0.004',
   EXE_FILES => [ qw() ],
   (eval { ExtUtils::MakeMaker->VERSION(6.21) } ? (LICENSE => 'perl') : ()),
   PREREQ_PM    => {

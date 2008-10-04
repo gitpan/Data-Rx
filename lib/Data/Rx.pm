@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 package Data::Rx;
-our $VERSION = '0.003';
+our $VERSION = '0.004';
 
 # ABSTRACT: perl implementation of Rx schema system
 
@@ -53,8 +53,8 @@ sub new {
 
   $self->register_type_plugin($_) for @plugins;
 
-  if ($arg->{plugins}) {
-    $self->register_type_plugin($_) for @{ $arg->{plugins} };
+  if ($arg->{type_plugins}) {
+    $self->register_type_plugin($_) for @{ $arg->{type_plugins} };
   }
 
   return $self;
@@ -111,7 +111,7 @@ Data::Rx - perl implementation of Rx schema system
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
 =head1 SYNOPSIS
 
@@ -152,6 +152,7 @@ This returns a new Data::Rx object.
 Valid arguments are:
 
     prefix - optional; a hashref of prefix strings and values for type shorthand
+    type_plugins - optional; an arrayref of type plugins
 
 The prefix hashref should look something like this:
 

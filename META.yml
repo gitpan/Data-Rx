@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:                Data-Rx
-version:             0.003
+version:             0.004
 abstract:            perl implementation of Rx schema system
 license:             perl
 author:              

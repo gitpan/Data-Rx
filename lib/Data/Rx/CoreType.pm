@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 package Data::Rx::CoreType;
-our $VERSION = '0.003';
+our $VERSION = '0.004';
 
 # ABSTRACT: base class for core Rx types
 
@@ -27,7 +27,7 @@ Data::Rx::CoreType - base class for core Rx types
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
 =head1 AUTHOR
 
