@@ -1,5 +1,9 @@
 Changes
-dist.ini
+LICENSE
+MANIFEST
+META.yml
+Makefile.PL
+README
 lib/Data/Rx.pm
 lib/Data/Rx/CoreType.pm
 lib/Data/Rx/CoreType/all.pm
@@ -16,12 +20,9 @@ lib/Data/Rx/CoreType/one.pm
 lib/Data/Rx/CoreType/rec.pm
 lib/Data/Rx/CoreType/seq.pm
 lib/Data/Rx/CoreType/str.pm
+lib/Data/Rx/TypeBundle.pm
+lib/Data/Rx/TypeBundle/Core.pm
 lib/Data/Rx/Util.pm
-LICENSE
-Makefile.PL
-MANIFEST
-META.yml
-README
 spec/data/arr.json
 spec/data/bool.json
 spec/data/null.json

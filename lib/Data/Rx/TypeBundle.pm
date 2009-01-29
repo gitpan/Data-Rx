@@ -1,18 +1,18 @@
 use strict;
 use warnings;
-package Data::Rx::CoreType::nil;
+package Data::Rx::TypeBundle;
 our $VERSION = '0.005';
 
-use base 'Data::Rx::CoreType';
-# ABSTRACT: the Rx //nil type
+# ABSTRACT: base class for type bundles
 
-sub check {
-  my ($self, $value) = @_;
-
-  return ! defined $value;
+sub prefix_pairs {
+  return if ref $_[0] and $_[0]->{no_prefix};
+  $_[0]->_prefix_pairs;
 }
 
-sub subname   { 'nil' }
+sub without_prefix {
+  bless { no_prefix => 1 } => $_[0];
+}
 
 1;
 
@@ -22,7 +22,7 @@ __END__
 
 =head1 NAME
 
-Data::Rx::CoreType::nil - the Rx //nil type
+Data::Rx::TypeBundle - base class for type bundles
 
 =head1 VERSION
 

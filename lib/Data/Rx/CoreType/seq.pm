@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 package Data::Rx::CoreType::seq;
-our $VERSION = '0.004';
+our $VERSION = '0.005';
 
 use base 'Data::Rx::CoreType';
 # ABSTRACT: the Rx //seq type
@@ -64,7 +64,7 @@ Data::Rx::CoreType::seq - the Rx //seq type
 
 =head1 VERSION
 
-version 0.004
+version 0.005
 
 =head1 AUTHOR
 
@@ -72,7 +72,7 @@ version 0.004
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2008 by Ricardo SIGNES.
+This software is copyright (c) 2009 by Ricardo SIGNES.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as perl itself.
