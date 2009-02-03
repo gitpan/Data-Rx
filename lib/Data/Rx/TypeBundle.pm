@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 package Data::Rx::TypeBundle;
-our $VERSION = '0.005';
+our $VERSION = '0.006';
 
 # ABSTRACT: base class for type bundles
 
@@ -26,7 +26,7 @@ Data::Rx::TypeBundle - base class for type bundles
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
 =head1 AUTHOR
 

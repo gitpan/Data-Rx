@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 package Data::Rx::CoreType::any;
-our $VERSION = '0.005';
+our $VERSION = '0.006';
 
 use base 'Data::Rx::CoreType';
 # ABSTRACT: the Rx //any type
@@ -49,7 +49,7 @@ Data::Rx::CoreType::any - the Rx //any type
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
 =head1 AUTHOR
 

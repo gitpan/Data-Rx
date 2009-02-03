@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 package Test::RxSpec;
-our $VERSION = '0.005';
+our $VERSION = '0.006';
 
 
 use autodie;

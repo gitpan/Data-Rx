@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 package Data::Rx;
-our $VERSION = '0.005';
+our $VERSION = '0.006';
 
 # ABSTRACT: perl implementation of Rx schema system
 
@@ -53,6 +53,8 @@ sub new {
 
     $self->register_type_plugin($plugin);
   }
+
+  $self->add_prefix($_ => $arg->{prefix}{ $_ }) for keys %{ $arg->{prefix} };
 
   return $self;
 }
@@ -123,7 +125,7 @@ Data::Rx - perl implementation of Rx schema system
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
 =head1 SYNOPSIS
 

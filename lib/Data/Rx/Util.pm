@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 package Data::Rx::Util;
-our $VERSION = '0.005';
+our $VERSION = '0.006';
 
 use Carp ();
 use List::Util ();
@@ -62,7 +62,7 @@ Data::Rx::Util - helper routines for Data::Rx
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
 =head1 AUTHOR
 

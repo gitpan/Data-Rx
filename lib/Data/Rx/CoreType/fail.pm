@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 package Data::Rx::CoreType::fail;
-our $VERSION = '0.005';
+our $VERSION = '0.006';
 
 use base 'Data::Rx::CoreType';
 # ABSTRACT: the Rx //fail type
@@ -22,7 +22,7 @@ Data::Rx::CoreType::fail - the Rx //fail type
 
 =head1 VERSION
 
-version 0.005
+version 0.006
 
 =head1 AUTHOR
 
