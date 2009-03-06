@@ -2,7 +2,7 @@
 abstract: perl implementation of Rx schema system
 author: 
   - Ricardo SIGNES <rjbs@cpan.org>
-generated_by: Dist::Zilla::Plugin::MetaYaml version 1.003
+generated_by: Dist::Zilla::Plugin::MetaYaml version 1.004
 license: perl
 name: Data-Rx
 requires: 
@@ -16,4 +16,4 @@ requires:
   Scalar::Util: 0
   Test::More: 0
   autodie: 0
-version: 0.006
+version: 0.007

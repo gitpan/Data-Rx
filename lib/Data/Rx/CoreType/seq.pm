@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 package Data::Rx::CoreType::seq;
-our $VERSION = '0.006';
+our $VERSION = '0.007';
 
 use base 'Data::Rx::CoreType';
 # ABSTRACT: the Rx //seq type
@@ -64,7 +64,7 @@ Data::Rx::CoreType::seq - the Rx //seq type
 
 =head1 VERSION
 
-version 0.006
+version 0.007
 
 =head1 AUTHOR
 
