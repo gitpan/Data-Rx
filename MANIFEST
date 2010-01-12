@@ -1,6 +1,7 @@
 Changes
 LICENSE
 MANIFEST
+META.json
 META.yml
 Makefile.PL
 README
@@ -73,5 +74,7 @@ spec/schemata/str-empty.json
 spec/schemata/str-x.json
 spec/schemata/str.json
 t/lib/Test/RxSpec.pm
+t/release-pod-coverage.t
+t/release-pod-syntax.t
 t/spec.t
 t/util-range.t

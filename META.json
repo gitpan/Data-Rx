@@ -1,0 +1,31 @@
+{
+   "resources" : {
+      "repository" : null
+   },
+   "meta-spec" : {
+      "version" : 1.4,
+      "url" : "http://module-build.sourceforge.net/META-spec-v1.4.html"
+   },
+   "generated_by" : "Dist::Zilla version 1.100060",
+   "version" : "0.100110",
+   "name" : "Data-Rx",
+   "author" : [
+      "Ricardo SIGNES <rjbs@cpan.org>"
+   ],
+   "license" : "perl",
+   "requires" : {
+      "Scalar::Util" : "0",
+      "Module::Pluggable" : "3.7",
+      "File::Find::Rule" : "0",
+      "ExtUtils::MakeMaker" : "6.11",
+      "Number::Tolerant" : "0",
+      "Carp" : "0",
+      "List::Util" : "0",
+      "Test::More" : "0",
+      "autodie" : "0",
+      "JSON" : "2",
+      "Module::Pluggable::Object" : "0"
+   },
+   "abstract" : "perl implementation of Rx schema system"
+}
+

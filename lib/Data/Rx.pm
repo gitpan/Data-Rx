@@ -1,8 +1,7 @@
 use strict;
 use warnings;
 package Data::Rx;
-our $VERSION = '0.007';
-
+our $VERSION = '0.100110';
 # ABSTRACT: perl implementation of Rx schema system
 
 use Data::Rx::Util;
@@ -116,7 +115,6 @@ sub core_type_plugins {
 1;
 
 __END__
-
 =pod
 
 =head1 NAME
@@ -125,67 +123,63 @@ Data::Rx - perl implementation of Rx schema system
 
 =head1 VERSION
 
-version 0.007
+version 0.100110
 
 =head1 SYNOPSIS
 
-    my $rx = Data::Rx->new;
+  my $rx = Data::Rx->new;
 
-    my $success = {
-      type     => '//rec',
-      required => {
-        location => '//str',
-        status   => { type => '//int', value => 201 },
+  my $success = {
+    type     => '//rec',
+    required => {
+      location => '//str',
+      status   => { type => '//int', value => 201 },
+    },
+    optional => {
+      comments => {
+        type     => '//arr',
+        contents => '//str',
       },
-      optional => {
-        comments => {
-          type     => '//arr',
-          contents => '//str',
-        },
-      },
-    };
+    },
+  };
 
-    my $schema = $rx->make_schema($success);
+  my $schema = $rx->make_schema($success);
 
-    my $reply = $json->decode( $agent->get($http_request) );
+  my $reply = $json->decode( $agent->get($http_request) );
 
-    die "invalid reply" unless $schema->check($reply);
-
-=head1 SEE ALSO
-
-L<http://rjbs.manxome.org/rx>
+  die "invalid reply" unless $schema->check($reply);
 
 =head1 METHODS
 
 =head2 new
 
-    my $rx = Data::Rx->new(\%arg);
+  my $rx = Data::Rx->new(\%arg);
 
 This returns a new Data::Rx object.
 
 Valid arguments are:
 
-    prefix        - optional; a hashref of prefix pairs for type shorthand
-    type_plugins  - optional; an arrayref of type or type bundle plugins
-    no_core_types - optional; if true, core type bundle is not loaded
+  prefix        - optional; a hashref of prefix pairs for type shorthand
+  type_plugins  - optional; an arrayref of type or type bundle plugins
+  no_core_types - optional; if true, core type bundle is not loaded
 
 The prefix hashref should look something like this:
 
-    {
-      'pobox'  => 'tag:pobox.com,1995:rx/core/',
-      'skynet' => 'tag:skynet.mil,1997-08-29:types/rx/',
-    }
+  {
+    'pobox'  => 'tag:pobox.com,1995:rx/core/',
+    'skynet' => 'tag:skynet.mil,1997-08-29:types/rx/',
+  }
 
 =head2 make_schema
 
-    my $schema = $rx->make_schema($schema);
+  my $schema = $rx->make_schema($schema);
 
 This returns a new schema checker (something with a C<check> method) for the
 given Rx input.
 
 =head2 register_type_plugin
 
-    $rx->register_type_plugin($type_or_bundle);
+  $rx->register_type_plugin($type_or_bundle);
 
 Given a type plugin, this registers the plugin with the Data::Rx object.
 Bundles are expanded recursively and all their plugins are registered.
@@ -193,11 +187,15 @@ Type plugins must have a C<type_uri> method and a C<new_checker> method.
 
 =head2 add_prefix
 
-    $rx->add_prefix($name => $prefix_string);
+  $rx->add_prefix($name => $prefix_string);
 
 For example:
 
-    $rx->add_prefix('.meta' => 'tag:codesimply.com,2008:rx/meta/');
+  $rx->add_prefix('.meta' => 'tag:codesimply.com,2008:rx/meta/');
+
+=head1 SEE ALSO
+
+L<http://rjbs.manxome.org/rx>
 
 =head1 AUTHOR
 
@@ -205,11 +203,10 @@ For example:
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2009 by Ricardo SIGNES.
+This software is copyright (c) 2010 by Ricardo SIGNES.
 
 This is free software; you can redistribute it and/or modify it under
-the same terms as perl itself.
+the same terms as the Perl 5 programming language system itself.
 
-=cut 
-
+=cut
 
