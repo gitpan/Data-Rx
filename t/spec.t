@@ -5,16 +5,18 @@ use File::Find::Rule;
 use Test::More;
 
 use lib 't/lib';
-use Test::RxSpec;
+use Test::RxTester;
 
-plan 'no_plan';
+Test::Builder->new->failure_output(\*STDOUT);
 
-# my @types = qw(num int rat txt bool scalar nil def map arr seq);
-my @files = File::Find::Rule->file->in('spec/schemata');
+my $rx_tester = Test::RxTester->new('spec/spec.json');
 
-for my $type (@files) {
-  $type =~ s{^spec/schemata/}{};
-  $type =~ s{\.json$}{};
-  next if $ENV{RX_TEST_SCHEMA} and $ENV{RX_TEST_SCHEMA} ne $type;
-  Test::RxSpec->test_spec($type);
+my @spec_names = @ARGV;
+
+if (@spec_names) {
+  plan 'no_plan';
+} else {
+  plan tests => $rx_tester->plan;
 }
+
+$rx_tester->run_tests(@spec_names);

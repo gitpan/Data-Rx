@@ -1,7 +1,9 @@
 use strict;
 use warnings;
 package Data::Rx::CoreType::map;
-our $VERSION = '0.100110';
+{
+  $Data::Rx::CoreType::map::VERSION = '0.200000'; # TRIAL
+}
 use base 'Data::Rx::CoreType';
 # ABSTRACT: the Rx //map type
 
@@ -10,13 +12,12 @@ use Scalar::Util ();
 sub subname   { 'map' }
 
 sub new_checker {
-  my ($class, $arg, $rx) = @_;
-  my $self = $class->SUPER::new_checker({}, $rx);
+  my ($class, $arg, $rx, $type) = @_;
 
   Carp::croak("unknown arguments to new") unless
-  Data::Rx::Util->_x_subset_keys_y($arg, { values => 1 });
+    Data::Rx::Util->_x_subset_keys_y($arg, { values => 1 });
 
-  my $content_schema = {};
+  my $self = $class->SUPER::new_checker({}, $rx, $type);
 
   Carp::croak("no values constraint given") unless $arg->{values};
 
@@ -25,15 +26,31 @@ sub new_checker {
   return $self;
 }
 
-sub check {
+sub validate {
   my ($self, $value) = @_;
 
-  return unless
-    ! Scalar::Util::blessed($value) and ref $value eq 'HASH';
-
-  for my $entry_value (values %$value) {
-    return unless $self->{value_constraint}->check($entry_value);
+  unless (! Scalar::Util::blessed($value) and ref $value eq 'HASH') {
+    $self->fail({
+      error   => [ qw(type) ],
+      message => "found value is not a hashref",
+      value   => $value,
+    });
   }
+
+  my @subchecks;
+  for my $key ($self->rx->sort_keys ? sort keys %$value : keys %$value) {
+    push @subchecks, [
+      $value->{ $key },
+      $self->{value_constraint},
+      { data       => [$key],
+        data_type  => ['k' ],
+        check      => ['values'],
+        check_type => ['k'     ],
+      },
+    ];
+  }
+
+  $self->_subchecks(\@subchecks);
 
   return 1;
 }
@@ -49,15 +66,15 @@ Data::Rx::CoreType::map - the Rx //map type
 
 =head1 VERSION
 
-version 0.100110
+version 0.200000
 
 =head1 AUTHOR
 
-  Ricardo SIGNES <rjbs@cpan.org>
+Ricardo SIGNES <rjbs@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2010 by Ricardo SIGNES.
+This software is copyright (c) 2012 by Ricardo SIGNES.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

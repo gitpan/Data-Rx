@@ -1,7 +1,9 @@
 use strict;
 use warnings;
 package Data::Rx::CoreType::rec;
-our $VERSION = '0.100110';
+{
+  $Data::Rx::CoreType::rec::VERSION = '0.200000'; # TRIAL
+}
 use base 'Data::Rx::CoreType';
 # ABSTRACT: the Rx //rec type
 
@@ -10,15 +12,16 @@ use Scalar::Util ();
 sub subname   { 'rec' }
 
 sub new_checker {
-  my ($class, $arg, $rx) = @_;
-  my $self = $class->SUPER::new_checker({}, $rx);
+  my ($class, $arg, $rx, $type) = @_;
 
   Carp::croak("unknown arguments to new") unless
-  Data::Rx::Util->_x_subset_keys_y($arg, {
-    rest     => 1,
-    required => 1,
-    optional => 1,
-  });
+    Data::Rx::Util->_x_subset_keys_y($arg, {
+      rest     => 1,
+      required => 1,
+      optional => 1,
+    });
+
+  my $self = $class->SUPER::new_checker({}, $rx, $type);
 
   my $content_schema = {};
 
@@ -42,27 +45,75 @@ sub new_checker {
   return $self;
 }
 
-sub check {
+sub validate {
   my ($self, $value) = @_;
 
-  return unless
-    ! Scalar::Util::blessed($value) and ref $value eq 'HASH';
+  unless (! Scalar::Util::blessed($value) and ref $value eq 'HASH') {
+    $self->fail({
+      error   => [ qw(type) ],
+      message => "value is not a hashref",
+      value   => $value,
+    });
+  }
 
   my $c_schema = $self->{content_schema};
 
+  my @subchecks;
+
   my @rest_keys = grep { ! exists $c_schema->{$_} } keys %$value;
-  return if @rest_keys and not $self->{rest_schema};
+  if (@rest_keys and not $self->{rest_schema}) {
+    @rest_keys = sort @rest_keys;
+    push @subchecks,
+      $self->new_fail({
+        error    => [ qw(unexpected) ],
+        keys     => [@rest_keys],
+        message  => "found unexpected entries: @rest_keys",
+        value    => $value,
+      });
+  }
 
-  for my $key (keys %$c_schema) {
+  for my $key ($self->rx->sort_keys ? sort keys %$c_schema : keys %$c_schema) {
     my $check = $c_schema->{$key};
-    return if not $check->{optional} and not exists $value->{$key};
-    return if exists $value->{$key} and ! $check->{schema}->check($value->{$key});
+
+    if (not $check->{optional} and not exists $value->{ $key }) {
+      push @subchecks,
+        $self->new_fail({
+          error    => [ qw(missing) ],
+          keys     => [$key],
+          message  => "no value given for required entry $key",
+          value    => $value,
+        });
+      next;
+    }
+
+    if (exists $value->{$key}) {
+      push @subchecks, [
+                        $value->{$key},
+                        $check->{schema},
+                        { data       => [$key],
+                          data_type  => ['k' ],
+                          check      => [$check->{optional}
+                                           ? 'optional' : 'required',
+                                         $key],
+                          check_type => ['k', 'k'],
+                        },
+                       ];
+    }
   }
 
-  if (@rest_keys) {
+  if (@rest_keys && $self->{rest_schema}) {
     my %rest = map { $_ => $value->{$_} } @rest_keys;
-    return unless $self->{rest_schema}->check(\%rest);
+
+    push @subchecks, [
+                      \%rest,
+                      $self->{rest_schema},
+                      { check      => ['rest'],
+                        check_type => ['k'],
+                      },
+                     ];
   }
+
+  $self->_subchecks(\@subchecks);
 
   return 1;
 }
@@ -78,15 +129,15 @@ Data::Rx::CoreType::rec - the Rx //rec type
 
 =head1 VERSION
 
-version 0.100110
+version 0.200000
 
 =head1 AUTHOR
 
-  Ricardo SIGNES <rjbs@cpan.org>
+Ricardo SIGNES <rjbs@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2010 by Ricardo SIGNES.
+This software is copyright (c) 2012 by Ricardo SIGNES.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

@@ -4,11 +4,11 @@
   "pass": { },
 
   "fail": {
-    "arr" : "*",
-    "bool": "*",
-    "null": "*",
-    "num" : "*",
-    "obj" : "*",
-    "str" : "*"
+    "arr" : { "*": { "data": [ ], "check": [ ], "error": [ "fail" ] } },
+    "bool": { "*": { "data": [ ], "check": [ ], "error": [ "fail" ] } },
+    "null": { "*": { "data": [ ], "check": [ ], "error": [ "fail" ] } },
+    "num" : { "*": { "data": [ ], "check": [ ], "error": [ "fail" ] } },
+    "obj" : { "*": { "data": [ ], "check": [ ], "error": [ "fail" ] } },
+    "str" : { "*": { "data": [ ], "check": [ ], "error": [ "fail" ] } }
   }
 }

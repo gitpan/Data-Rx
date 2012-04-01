@@ -1,62 +1,100 @@
 use strict;
 use warnings;
 package Data::Rx::CoreType::num;
-our $VERSION = '0.100110';
+{
+  $Data::Rx::CoreType::num::VERSION = '0.200000'; # TRIAL
+}
 use base 'Data::Rx::CoreType';
 # ABSTRACT: the Rx //num type
 
-sub _int_re { qr{(?:0|[1-9]\d*)} }
-sub _dec_re { qr{(?:\.\d+)?}     }
-sub _exp_re { my $int_re = $_[0]->_int_re; qr{(?:e$int_re)?}i }
-
-sub _val_re {
-  my ($self) = @_;
-
-  return '\A'
-       . qr{[-+]?}
-       . join(q{}, map {; $self->$_ } qw(_int_re _dec_re _exp_re))
-       . '\z';
-}
-
 sub new_checker {
-  my ($class, $arg, $rx) = @_;
-  my $self = {};
+  my ($class, $arg, $rx, $type) = @_;
 
   Carp::croak("unknown arguments to new")
     unless Data::Rx::Util->_x_subset_keys_y($arg, { range => 1, value => 1});
 
+  my $self = $class->SUPER::new_checker({}, $rx, $type);
+
   $self->{range_check} = Data::Rx::Util->_make_range_check($arg->{range})
     if $arg->{range};
 
-  if (
-    exists $arg->{value}
-    and (
-      (! defined $arg->{value})
-      or ref $arg->{value}
-      or ($arg->{value} !~ $class->_val_re)
-    )
-  ) {
-    Carp::croak(sprintf 'invalid value for %s', $class->type_name)
+  if (exists $arg->{value}) {
+    my $val = $arg->{value};
+    if (
+      (! defined $val)
+      or ref $val
+      or ! $class->_value_is_of_type($val)
+    ) {
+      Carp::croak(sprintf(
+        'invalid value (%s) for //%s',
+        defined $val ? $val : 'undef',
+        $class->subname,
+      ));
+    }
   }
 
   $self->{value} = $arg->{value} if defined $arg->{value};
 
-  bless $self => $class;
+  return $self;
 }
 
-sub check {
+sub __type_fail {
+  my ($self, $value) = @_;
+  $self->fail({
+    error   => [ qw(type) ],
+    message => "value is not a number",
+    value   => $value,
+  });
+}
+
+my $_NUM_RE;
+BEGIN {
+  $_NUM_RE = qr/
+    \A
+      [-+]?
+      (?:0|[1-9]\d*)
+      (?:\.\d+)?
+      (?:e
+        (?:0|[1-9]\d*)
+      )?
+    \z
+  /ix;
+}
+
+sub _value_is_of_type {
   my ($self, $value) = @_;
 
-  return unless defined $value and length $value;
+  return $value =~ $_NUM_RE;
+}
+
+sub validate {
+  my ($self, $value) = @_;
+
+  $self->__type_fail($value) unless defined $value and length $value;
 
   # XXX: This is insufficiently precise.  It's here to keep us from believing
   # that JSON::XS::Boolean objects, which end up looking like 0 or 1, are
   # integers. -- rjbs, 2008-07-24
-  return if ref $value;
+  $self->__type_fail($value) if ref $value;
 
-  return unless $value =~ $self->_val_re;
-  return if $self->{range_check} && ! $self->{range_check}->($value);
-  return if defined($self->{value}) && $value != $self->{value};
+  $self->__type_fail($value) unless $self->_value_is_of_type($value);
+
+  if ($self->{range_check} && ! $self->{range_check}->($value)) {
+    $self->fail({
+      error   => [ qw(range) ],
+      message => "value is outside allowed range",
+      value   => $value,
+    });
+  }
+
+  if (defined($self->{value}) && $value != $self->{value}) {
+    $self->fail({
+      error   => [ qw(value) ],
+      message => "found value is not the required value",
+      value   => $value,
+    });
+  }
+
   return 1;
 }
 
@@ -73,15 +111,15 @@ Data::Rx::CoreType::num - the Rx //num type
 
 =head1 VERSION
 
-version 0.100110
+version 0.200000
 
 =head1 AUTHOR
 
-  Ricardo SIGNES <rjbs@cpan.org>
+Ricardo SIGNES <rjbs@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2010 by Ricardo SIGNES.
+This software is copyright (c) 2012 by Ricardo SIGNES.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

@@ -1,11 +1,19 @@
 use strict;
 use warnings;
 package Data::Rx::CoreType::fail;
-our $VERSION = '0.100110';
+{
+  $Data::Rx::CoreType::fail::VERSION = '0.200000'; # TRIAL
+}
 use base 'Data::Rx::CoreType';
 # ABSTRACT: the Rx //fail type
 
-sub check { return}
+sub validate {
+  $_[0]->fail({
+    error   => [ qw(fail) ],
+    message => "matching reached an always-fail check",
+    value   => $_[1],
+  });
+}
 
 sub subname   { 'fail' }
 
@@ -20,15 +28,15 @@ Data::Rx::CoreType::fail - the Rx //fail type
 
 =head1 VERSION
 
-version 0.100110
+version 0.200000
 
 =head1 AUTHOR
 
-  Ricardo SIGNES <rjbs@cpan.org>
+Ricardo SIGNES <rjbs@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2010 by Ricardo SIGNES.
+This software is copyright (c) 2012 by Ricardo SIGNES.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

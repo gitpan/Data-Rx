@@ -22,6 +22,8 @@ lib/Data/Rx/CoreType/one.pm
 lib/Data/Rx/CoreType/rec.pm
 lib/Data/Rx/CoreType/seq.pm
 lib/Data/Rx/CoreType/str.pm
+lib/Data/Rx/Failure.pm
+lib/Data/Rx/Failures.pm
 lib/Data/Rx/TypeBundle.pm
 lib/Data/Rx/TypeBundle/Core.pm
 lib/Data/Rx/Util.pm
@@ -30,6 +32,7 @@ spec/data/bool.json
 spec/data/null.json
 spec/data/num.json
 spec/data/obj.json
+spec/data/person.json
 spec/data/str.json
 spec/index.json
 spec/schemata/all-2recs.json
@@ -38,6 +41,8 @@ spec/schemata/any.json
 spec/schemata/array-3-int.json
 spec/schemata/array-free.json
 spec/schemata/bool.json
+spec/schemata/composed-person-prefix.json
+spec/schemata/composed-person.json
 spec/schemata/def.json
 spec/schemata/fail.json
 spec/schemata/int-0.json
@@ -51,6 +56,9 @@ spec/schemata/invalid/arr-arr-cont.json
 spec/schemata/invalid/arr-no-content.json
 spec/schemata/invalid/arr-unknown-arg.json
 spec/schemata/invalid/arr-untyped-cont.json
+spec/schemata/invalid/composed-cycle.json
+spec/schemata/invalid/composed-invalid.json
+spec/schemata/invalid/composed-unknown-arg.json
 spec/schemata/invalid/int-unknown-arg.json
 spec/schemata/invalid/rec-both-req-opt.json
 spec/schemata/invalid/rec-unknown-arg.json
@@ -58,6 +66,13 @@ spec/schemata/invalid/seq-no-cont.json
 spec/schemata/invalid/seq-obj-cont.json
 spec/schemata/invalid/seq-unknown-arg.json
 spec/schemata/map-int.json
+spec/schemata/multi/all-ii.json
+spec/schemata/multi/array-3-int.json
+spec/schemata/multi/map-int.json
+spec/schemata/multi/rec-key-opt-rest.json
+spec/schemata/multi/rec-key-opt.json
+spec/schemata/multi/seq-ii-2bools.json
+spec/schemata/multi/seq-ii.json
 spec/schemata/nil.json
 spec/schemata/num-0.json
 spec/schemata/num-range.json
@@ -71,10 +86,11 @@ spec/schemata/seq-ii.json
 spec/schemata/seq-isi-2bools-short.json
 spec/schemata/seq-isi-2bools.json
 spec/schemata/str-empty.json
+spec/schemata/str-length.json
 spec/schemata/str-x.json
 spec/schemata/str.json
-t/lib/Test/RxSpec.pm
-t/release-pod-coverage.t
+spec/spec.json
+t/lib/Test/RxTester.pm
 t/release-pod-syntax.t
 t/spec.t
 t/util-range.t

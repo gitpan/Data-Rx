@@ -11,21 +11,21 @@
     ]
   },
   "fail": {
-    "arr" : "*",
-    "bool": "*",
-    "null": "*",
-    "num" : [
-      "5",
-      "5.0",
-      "0",
-      "0e0",
-      "-0",
-      "5E10",
-      "-5",
-      "-5.0",
-      "-5.1"
-    ],
-    "obj" : "*",
-    "str" : "*"
+    "arr" : { "*": { "data": [ ], "check": [ ], "error": [ "type" ] } },
+    "bool": { "*": { "data": [ ], "check": [ ], "error": [ "type" ] } },
+    "null": { "*": { "data": [ ], "check": [ ], "error": [ "type" ] } },
+    "num" : {
+      "5"   : { "data": [ ], "check": [ ], "error": [ "range" ] },
+      "5.0" : { "data": [ ], "check": [ ], "error": [ "range" ] },
+      "0"   : { "data": [ ], "check": [ ], "error": [ "range" ] },
+      "0e0" : { "data": [ ], "check": [ ], "error": [ "range" ] },
+      "-0"  : { "data": [ ], "check": [ ], "error": [ "range" ] },
+      "5E10": { "data": [ ], "check": [ ], "error": [ "range" ] },
+      "-5"  : { "data": [ ], "check": [ ], "error": [ "range" ] },
+      "-5.0": { "data": [ ], "check": [ ], "error": [ "range" ] },
+      "-5.1": { "data": [ ], "check": [ ], "error": [ "range" ] }
+    },
+    "obj" : { "*": { "data": [ ], "check": [ ], "error": [ "type" ] } },
+    "str" : { "*": { "data": [ ], "check": [ ], "error": [ "type" ] } }
   }
 }

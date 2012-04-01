@@ -1,7 +1,9 @@
 use strict;
 use warnings;
 package Data::Rx;
-our $VERSION = '0.100110';
+{
+  $Data::Rx::VERSION = '0.200000'; # TRIAL
+}
 # ABSTRACT: perl implementation of Rx schema system
 
 use Data::Rx::Util;
@@ -35,8 +37,9 @@ sub new {
   unshift @plugins, $class->core_bundle unless $arg->{no_core_bundle};
 
   my $self = {
-    prefix  => { },
-    handler => { },
+    prefix    => { },
+    handler   => { },
+    sort_keys => !!$arg->{sort_keys},
   };
 
   bless $self => $class;
@@ -63,7 +66,17 @@ sub make_schema {
 
   my $schema_arg = {%$schema};
   delete $schema_arg->{type};
-  my $checker = $handler->new_checker($schema_arg, $self);
+
+  my $checker;
+
+  if (ref $handler) {
+    if (keys %$schema_arg) {
+      Carp::croak("composed type does not take check arguments");
+    }
+    $checker = $self->make_schema($handler->{'schema'});
+  } else {
+    $checker = $handler->new_checker($schema_arg, $self, $type);
+  }
 
   return $checker;
 }
@@ -91,6 +104,19 @@ sub register_type_plugin {
 }
 
 
+sub learn_type {
+  my ($self, $uri, $schema) = @_;
+
+  Carp::confess("a type handler is already registered for $uri")
+    if $self->{handler}{ $uri };
+
+  die "invalid schema for '$uri': $@"
+    unless eval { $self->make_schema($schema) };
+
+  $self->{handler}{ $uri } = { schema => $schema };
+}
+
+
 sub add_prefix {
   my ($self, $name, $base) = @_;
 
@@ -98,6 +124,15 @@ sub add_prefix {
     if $self->{prefix}{ $name };
 
   $self->{prefix}{ $name } = $base;
+}
+
+
+sub sort_keys {
+  my $self = shift;
+
+  $self->{sort_keys} = !!$_[0] if @_;
+
+  return $self->{sort_keys};
 }
 
 sub core_bundle {
@@ -123,7 +158,7 @@ Data::Rx - perl implementation of Rx schema system
 
 =head1 VERSION
 
-version 0.100110
+version 0.200000
 
 =head1 SYNOPSIS
 
@@ -162,6 +197,7 @@ Valid arguments are:
   prefix        - optional; a hashref of prefix pairs for type shorthand
   type_plugins  - optional; an arrayref of type or type bundle plugins
   no_core_types - optional; if true, core type bundle is not loaded
+  sort_keys     - optional; see L</sort_keys>
 
 The prefix hashref should look something like this:
 
@@ -185,6 +221,26 @@ Given a type plugin, this registers the plugin with the Data::Rx object.
 Bundles are expanded recursively and all their plugins are registered.
 Type plugins must have a C<type_uri> method and a C<new_checker> method.
 
+=head2 learn_type
+
+  $rx->learn_type($uri, $schema);
+
+This defines a new type as a schema composed of other types.
+
+For example:
+
+  $rx->learn_type('tag:www.example.com:rx/person',
+                  { type     => '//rec',
+                    required => {
+                      firstname => '//str',
+                      lastname  => '//str',
+                    },
+                    optional => {
+                      middlename => '//str',
+                    },
+                  },
+                 );
+
 =head2 add_prefix
 
   $rx->add_prefix($name => $prefix_string);
@@ -193,17 +249,25 @@ For example:
 
   $rx->add_prefix('.meta' => 'tag:codesimply.com,2008:rx/meta/');
 
+=head2 sort_keys
+
+  $rx->sort_keys(1);
+
+When sort_keys is enabled, causes Rx checkers for //rec and //map to
+sort the keys before validating.  This results in failures being
+produced in a consistent order.
+
 =head1 SEE ALSO
 
 L<http://rjbs.manxome.org/rx>
 
 =head1 AUTHOR
 
-  Ricardo SIGNES <rjbs@cpan.org>
+Ricardo SIGNES <rjbs@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2010 by Ricardo SIGNES.
+This software is copyright (c) 2012 by Ricardo SIGNES.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

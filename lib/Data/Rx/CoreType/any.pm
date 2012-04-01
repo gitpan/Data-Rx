@@ -1,37 +1,58 @@
 use strict;
 use warnings;
 package Data::Rx::CoreType::any;
-our $VERSION = '0.100110';
+{
+  $Data::Rx::CoreType::any::VERSION = '0.200000'; # TRIAL
+}
 use base 'Data::Rx::CoreType';
 # ABSTRACT: the Rx //any type
 
 use Scalar::Util ();
 
 sub new_checker {
-  my ($class, $arg, $rx) = @_;
+  my ($class, $arg, $rx, $type) = @_;
 
   Carp::croak("unknown arguments to new")
     unless Data::Rx::Util->_x_subset_keys_y($arg, { of  => 1});
 
-  my $self = bless { } => $class;
+  my $self = $class->SUPER::new_checker({}, $rx, $type);
 
   if (my $of = $arg->{of}) {
     Carp::croak("invalid 'of' argument to //any") unless
       Scalar::Util::reftype $of eq 'ARRAY' and @$of;
-    
+
     $self->{of} = [ map {; $rx->make_schema($_) } @$of ];
   }
 
   return $self;
 }
 
-sub check {
+sub validate {
   return 1 unless $_[0]->{of};
 
   my ($self, $value) = @_;
-  
-  $_->check($value) && return 1 for @{ $self->{of} };
-  return;
+
+  my @failures;
+  for my $i (0 .. $#{ $self->{of} }) {
+    my $check = $self->{of}[ $i ];
+    return 1 if eval { $check->validate($value) };
+
+    my $failure = $@;
+    $failure->contextualize({
+      type       => $self->type,
+      check      => ['of',  $i],
+      check_type => [ 'k', 'i'],
+    });
+
+    push @failures, $failure;
+  }
+
+  $self->fail({
+    error    => [ qw(none) ],
+    message  => "matched none of the available alternatives",
+    value    => $value,
+    failures => \@failures,
+  });
 }
 
 sub subname   { 'any' }
@@ -47,15 +68,15 @@ Data::Rx::CoreType::any - the Rx //any type
 
 =head1 VERSION
 
-version 0.100110
+version 0.200000
 
 =head1 AUTHOR
 
-  Ricardo SIGNES <rjbs@cpan.org>
+Ricardo SIGNES <rjbs@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2010 by Ricardo SIGNES.
+This software is copyright (c) 2012 by Ricardo SIGNES.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
