@@ -2,14 +2,14 @@ use strict;
 use warnings;
 package Data::Rx::CoreType::str;
 {
-  $Data::Rx::CoreType::str::VERSION = '0.200000'; # TRIAL
+  $Data::Rx::CoreType::str::VERSION = '0.200001'; # TRIAL
 }
-use base 'Data::Rx::CoreType';
+use parent 'Data::Rx::CoreType';
 # ABSTRACT: the Rx //str type
 
 use Data::Rx::Util;
 
-sub new_checker {
+sub guts_from_arg {
   my ($class, $arg, $rx, $type) = @_;
 
   Carp::croak("unknown arguments to new")
@@ -29,17 +29,17 @@ sub new_checker {
     }
   }
 
-  my $self = $class->SUPER::new_checker({}, $rx, $type);
+  my $guts = {};
 
-  $self->{length_check} = Data::Rx::Util->_make_range_check($arg->{length})
+  $guts->{length_check} = Data::Rx::Util->_make_range_check($arg->{length})
     if $arg->{length};
 
-  $self->{value} = $arg->{value} if defined $arg->{value};
+  $guts->{value} = $arg->{value} if defined $arg->{value};
 
-  return $self;
+  return $guts;
 }
 
-sub validate {
+sub assert_valid {
   my ($self, $value) = @_;
 
   unless (defined $value) {
@@ -96,7 +96,7 @@ Data::Rx::CoreType::str - the Rx //str type
 
 =head1 VERSION
 
-version 0.200000
+version 0.200001
 
 =head1 AUTHOR
 

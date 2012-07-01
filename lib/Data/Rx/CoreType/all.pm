@@ -2,20 +2,18 @@ use strict;
 use warnings;
 package Data::Rx::CoreType::all;
 {
-  $Data::Rx::CoreType::all::VERSION = '0.200000'; # TRIAL
+  $Data::Rx::CoreType::all::VERSION = '0.200001'; # TRIAL
 }
-use base 'Data::Rx::CoreType';
+use parent 'Data::Rx::CoreType';
 # ABSTRACT: the Rx //all type
 
 use Scalar::Util ();
 
-sub new_checker {
+sub guts_from_arg {
   my ($class, $arg, $rx, $type) = @_;
 
   Carp::croak("unknown arguments to new")
     unless Data::Rx::Util->_x_subset_keys_y($arg, { of  => 1});
-
-  my $self = $class->SUPER::new_checker({}, $rx, $type);
 
   Carp::croak("no 'of' parameter given to //all") unless exists $arg->{of};
 
@@ -24,12 +22,10 @@ sub new_checker {
   Carp::croak("invalid 'of' argument to //all") unless
     defined $of and Scalar::Util::reftype $of eq 'ARRAY' and @$of;
 
-  $self->{of} = [ map {; $rx->make_schema($_) } @$of ];
-
-  return $self;
+  return { of => [ map {; $rx->make_schema($_) } @$of ] };
 }
 
-sub validate {
+sub assert_valid {
   my ($self, $value) = @_;
 
   my @subchecks;
@@ -37,13 +33,13 @@ sub validate {
     push @subchecks, [
       $value,
       $self->{of}[$i],
-      { check      => ['of', $i ],
-        check_type => ['k' , 'i'],
-      },
+      {
+        check_path => [ [ 'of', 'key'], [ $i, 'index' ] ],
+      }
     ];
   }
 
-  $self->_subchecks(\@subchecks);
+  $self->perform_subchecks(\@subchecks);
 
   return 1;
 }
@@ -61,7 +57,7 @@ Data::Rx::CoreType::all - the Rx //all type
 
 =head1 VERSION
 
-version 0.200000
+version 0.200001
 
 =head1 AUTHOR
 

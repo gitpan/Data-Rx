@@ -1,8 +1,8 @@
 use strict;
 use warnings;
-package Data::Rx::Failures;
+package Data::Rx::FailureSet;
 {
-  $Data::Rx::Failures::VERSION = '0.200000'; # TRIAL
+  $Data::Rx::FailureSet::VERSION = '0.200001'; # TRIAL
 }
 # ABSTRACT: multiple structured failure reports from an Rx checker
 
@@ -15,7 +15,7 @@ sub new {
   my $failures;
 
   my $guts = {
-    failures => [ map $_->isa('Data::Rx::Failures')
+    failures => [ map $_->isa('Data::Rx::FailureSet')
                         ? @{ $_->{failures} }
                         : $_,
                       @{ $arg->{failures} || [] },
@@ -60,7 +60,6 @@ sub build_struct {
     my @type = $failure->data_path_type;
 
     @path == @type or die "bad path info in build_struct()";
-
 
     # go to the appropriate location in the struct, vivifying as necessary
 
@@ -138,11 +137,11 @@ __END__
 
 =head1 NAME
 
-Data::Rx::Failures - multiple structured failure reports from an Rx checker
+Data::Rx::FailureSet - multiple structured failure reports from an Rx checker
 
 =head1 VERSION
 
-version 0.200000
+version 0.200001
 
 =head1 AUTHOR
 

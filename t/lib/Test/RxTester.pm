@@ -83,7 +83,7 @@ sub assert_pass {
   my $desc = "$schema_desc should ACCEPT $input_desc";
 
   try {
-    $schema->validate($input);
+    $schema->assert_valid($input);
     Test::More::pass("$desc");
   } catch {
     my $fails = $_;
@@ -96,17 +96,14 @@ sub assert_pass {
 
 sub assert_fail {
   my ($self, $arg) = @_;
-  my ($schema, $schema_desc, $schema_spec, $input, $input_desc, $want, $want_struct)
-    = @$arg{ qw(schema schema_desc schema_spec input input_desc want want_struct) };
+  my ($schema, $schema_desc, $schema_spec, $input, $input_desc, $want)
+    = @$arg{ qw(schema schema_desc schema_spec input input_desc want) };
 
   my $desc = "$schema_desc should REJECT $input_desc";
 
   try {
-    $schema->validate($input);
+    $schema->assert_valid($input);
     Test::More::fail($desc);
-    if ($want_struct) {
-      Test::More::fail("$desc, failures struct");
-    }
   } catch {
     my $fails = $_;
     my $ok   = 1;
@@ -114,7 +111,7 @@ sub assert_fail {
 
   FAILS:
     {
-      if (try { $fails->isa('Data::Rx::Failures') }) {
+      if (try { $fails->isa('Data::Rx::FailureSet') }) {
         my $fail = $fails->failures;
         $want ||= [];
 
@@ -152,27 +149,13 @@ sub assert_fail {
                        ? "unblessed " . ref($fails)
                        : "non-ref: $fails";
 
-        push @diag, 'want $@: Data::Rx::Failures',
+        push @diag, 'want $@: Data::Rx::FailureSet',
                     'have $@: ' . $desc;
       }
     }
 
     Test::More::ok($ok, $desc);
     Test::More::diag "    $_" for @diag;
-
-    if ($want_struct) {
-      my ($ok, $stack) =
-        cmp_details($want_struct,$fails->build_struct);
-
-      my @diag;
-
-      if (!$ok) {
-        push @diag, "errors struct does not match", deep_diag($stack);
-      }
-
-      Test::More::ok($ok, "$desc, failures struct");
-      Test::More::diag "    $_" for @diag;
-    }
   }
 }
 
@@ -193,18 +176,6 @@ sub compare_fail {
         push @diag, "want path to data: $want",
                     "have path to data: $have";
       };
-    my $ref_to_value =
-      test_path($input, [$fail->data_path], [$fail->data_path_type]);
-    if ($ref_to_value) {
-      eq_deeply($$ref_to_value, shallow($fail->value))
-        or do {
-          $ok = 0;
-          push @diag, "value at path to data does not match failure value";
-        };
-    } else {
-      $ok = 0;
-      push @diag, "invalid path to data: " . $fail->data_string;
-    }
   }
 
   if ($want->{check}) {
@@ -216,14 +187,6 @@ sub compare_fail {
         push @diag, "want path to check: $want",
                     "have path to check: $have";
       };
-
-    # path check doesn't work for composed types...  -- rjk, 2010-12-17
-    $schema_desc =~ /composed/
-      or test_path($schema_spec, [$fail->check_path], [$fail->check_path_type])
-        or do {
-          $ok = 0;
-          push @diag, "invalid path to check: " . $fail->check_string;
-        };
   }
 
   if ($want->{error}) {
@@ -244,33 +207,6 @@ sub compare_fail {
   return ($ok, @diag);
 }
 
-sub test_path {
-  my ($data, $path, $type) = @_;
-
-  @$path == @$type or return;
-
-  for (my $i = 0; $i < @$path; ++$i) {
-    ref $data or return;
-
-    my $key = $path->[$i];
-
-    if ($type->[$i] eq 'i' && ref $data eq 'ARRAY') {
-      $key =~ /^\d+\z/ or return;
-      $key <= $#$data
-        or return;
-      $data = $data->[$key];
-    } elsif ($type->[$i] eq 'k' && ref $data eq 'HASH') {
-      exists $data->{$key}
-        or return;
-      $data = $data->{$key};
-    } else {
-      return;
-    }
-  }
-
-  return \$data;
-}
-
 sub run_tests {
   my ($self, @spec_names) = @_;
 
@@ -288,20 +224,20 @@ sub run_tests {
 
     my $rx     = Data::Rx->new({ sort_keys => 1 });
 
-    if ($spec->{'composed-type'}) {
+    if ($spec->{'composedtype'}) {
       my $rc =
-        eval { $rx->learn_type($spec->{'composed-type'}{'uri'},
-                               $spec->{'composed-type'}{'schema'});
+        eval { $rx->learn_type($spec->{'composedtype'}{'uri'},
+                               $spec->{'composedtype'}{'schema'});
                1 };
       my $error = $@;
 
-      if ($spec->{'composed-type'}{'invalid'}) {
+      if ($spec->{'composedtype'}{'invalid'}) {
         Test::More::ok($error && !$rc, "BAD COMPOSED TYPE: $spec_name");
         next SPEC;
       }
 
-      $rx->add_prefix(@{$spec->{'composed-type'}{'prefix'}})
-        if $spec->{'composed-type'}{'prefix'};
+      $rx->add_prefix(@{$spec->{'composedtype'}{'prefix'}})
+        if $spec->{'composedtype'}{'prefix'};
     }
 
     my $schema = eval { $rx->make_schema($spec->{schema}) };
@@ -337,7 +273,6 @@ sub run_tests {
           input       => $input,
           input_desc  => $test_name,
           want        => $test_spec->{errors},
-          want_struct => $test_spec->{errors_struct},
         });
       }
     }

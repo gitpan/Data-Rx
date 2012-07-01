@@ -2,31 +2,27 @@ use strict;
 use warnings;
 package Data::Rx::CoreType::map;
 {
-  $Data::Rx::CoreType::map::VERSION = '0.200000'; # TRIAL
+  $Data::Rx::CoreType::map::VERSION = '0.200001'; # TRIAL
 }
-use base 'Data::Rx::CoreType';
+use parent 'Data::Rx::CoreType';
 # ABSTRACT: the Rx //map type
 
 use Scalar::Util ();
 
 sub subname   { 'map' }
 
-sub new_checker {
+sub guts_from_arg {
   my ($class, $arg, $rx, $type) = @_;
 
   Carp::croak("unknown arguments to new") unless
     Data::Rx::Util->_x_subset_keys_y($arg, { values => 1 });
 
-  my $self = $class->SUPER::new_checker({}, $rx, $type);
-
   Carp::croak("no values constraint given") unless $arg->{values};
 
-  $self->{value_constraint} = $rx->make_schema($arg->{values});
-
-  return $self;
+  return { value_constraint => $rx->make_schema($arg->{values}) };
 }
 
-sub validate {
+sub assert_valid {
   my ($self, $value) = @_;
 
   unless (! Scalar::Util::blessed($value) and ref $value eq 'HASH') {
@@ -42,15 +38,13 @@ sub validate {
     push @subchecks, [
       $value->{ $key },
       $self->{value_constraint},
-      { data       => [$key],
-        data_type  => ['k' ],
-        check      => ['values'],
-        check_type => ['k'     ],
+      { data_path  => [ [$key, 'key'] ],
+        check_path => [ ['values', 'key' ] ],
       },
     ];
   }
 
-  $self->_subchecks(\@subchecks);
+  $self->perform_subchecks(\@subchecks);
 
   return 1;
 }
@@ -66,7 +60,7 @@ Data::Rx::CoreType::map - the Rx //map type
 
 =head1 VERSION
 
-version 0.200000
+version 0.200001
 
 =head1 AUTHOR
 

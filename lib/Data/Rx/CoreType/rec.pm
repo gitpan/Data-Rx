@@ -2,16 +2,16 @@ use strict;
 use warnings;
 package Data::Rx::CoreType::rec;
 {
-  $Data::Rx::CoreType::rec::VERSION = '0.200000'; # TRIAL
+  $Data::Rx::CoreType::rec::VERSION = '0.200001'; # TRIAL
 }
-use base 'Data::Rx::CoreType';
+use parent 'Data::Rx::CoreType';
 # ABSTRACT: the Rx //rec type
 
 use Scalar::Util ();
 
 sub subname   { 'rec' }
 
-sub new_checker {
+sub guts_from_arg {
   my ($class, $arg, $rx, $type) = @_;
 
   Carp::croak("unknown arguments to new") unless
@@ -21,11 +21,11 @@ sub new_checker {
       optional => 1,
     });
 
-  my $self = $class->SUPER::new_checker({}, $rx, $type);
+  my $guts = {};
 
   my $content_schema = {};
 
-  $self->{rest_schema} = $rx->make_schema($arg->{rest}) if $arg->{rest};
+  $guts->{rest_schema} = $rx->make_schema($arg->{rest}) if $arg->{rest};
 
   TYPE: for my $type (qw(required optional)) {
     next TYPE unless my $entries = $arg->{$type};
@@ -41,11 +41,11 @@ sub new_checker {
     }
   };
 
-  $self->{content_schema} = $content_schema;
-  return $self;
+  $guts->{content_schema} = $content_schema;
+  return $guts;
 }
 
-sub validate {
+sub assert_valid {
   my ($self, $value) = @_;
 
   unless (! Scalar::Util::blessed($value) and ref $value eq 'HASH') {
@@ -88,16 +88,15 @@ sub validate {
 
     if (exists $value->{$key}) {
       push @subchecks, [
-                        $value->{$key},
-                        $check->{schema},
-                        { data       => [$key],
-                          data_type  => ['k' ],
-                          check      => [$check->{optional}
-                                           ? 'optional' : 'required',
-                                         $key],
-                          check_type => ['k', 'k'],
-                        },
-                       ];
+        $value->{$key},
+        $check->{schema},
+        { data_path  => [ [$key, 'key' ] ],
+          check_path => [
+            [ $check->{optional} ? 'optional' : 'required', 'key' ],
+            [ $key, 'key' ],
+          ],
+        },
+       ];
     }
   }
 
@@ -105,15 +104,14 @@ sub validate {
     my %rest = map { $_ => $value->{$_} } @rest_keys;
 
     push @subchecks, [
-                      \%rest,
-                      $self->{rest_schema},
-                      { check      => ['rest'],
-                        check_type => ['k'],
-                      },
-                     ];
+      \%rest,
+      $self->{rest_schema},
+      { check_path => [ ['rest', 'key' ] ],
+      },
+    ];
   }
 
-  $self->_subchecks(\@subchecks);
+  $self->perform_subchecks(\@subchecks);
 
   return 1;
 }
@@ -129,7 +127,7 @@ Data::Rx::CoreType::rec - the Rx //rec type
 
 =head1 VERSION
 
-version 0.200000
+version 0.200001
 
 =head1 AUTHOR
 

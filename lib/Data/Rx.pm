@@ -2,7 +2,7 @@ use strict;
 use warnings;
 package Data::Rx;
 {
-  $Data::Rx::VERSION = '0.200000'; # TRIAL
+  $Data::Rx::VERSION = '0.200001'; # TRIAL
 }
 # ABSTRACT: perl implementation of Rx schema system
 
@@ -158,7 +158,7 @@ Data::Rx - perl implementation of Rx schema system
 
 =head1 VERSION
 
-version 0.200000
+version 0.200001
 
 =head1 SYNOPSIS
 

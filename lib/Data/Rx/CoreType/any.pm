@@ -2,32 +2,32 @@ use strict;
 use warnings;
 package Data::Rx::CoreType::any;
 {
-  $Data::Rx::CoreType::any::VERSION = '0.200000'; # TRIAL
+  $Data::Rx::CoreType::any::VERSION = '0.200001'; # TRIAL
 }
-use base 'Data::Rx::CoreType';
+use parent 'Data::Rx::CoreType';
 # ABSTRACT: the Rx //any type
 
 use Scalar::Util ();
 
-sub new_checker {
+sub guts_from_arg {
   my ($class, $arg, $rx, $type) = @_;
 
   Carp::croak("unknown arguments to new")
     unless Data::Rx::Util->_x_subset_keys_y($arg, { of  => 1});
 
-  my $self = $class->SUPER::new_checker({}, $rx, $type);
+  my $guts = {};
 
   if (my $of = $arg->{of}) {
     Carp::croak("invalid 'of' argument to //any") unless
       Scalar::Util::reftype $of eq 'ARRAY' and @$of;
 
-    $self->{of} = [ map {; $rx->make_schema($_) } @$of ];
+    $guts->{of} = [ map {; $rx->make_schema($_) } @$of ];
   }
 
-  return $self;
+  return $guts;
 }
 
-sub validate {
+sub assert_valid {
   return 1 unless $_[0]->{of};
 
   my ($self, $value) = @_;
@@ -35,13 +35,12 @@ sub validate {
   my @failures;
   for my $i (0 .. $#{ $self->{of} }) {
     my $check = $self->{of}[ $i ];
-    return 1 if eval { $check->validate($value) };
+    return 1 if eval { $check->assert_valid($value) };
 
     my $failure = $@;
     $failure->contextualize({
       type       => $self->type,
-      check      => ['of',  $i],
-      check_type => [ 'k', 'i'],
+      check_path => [ [ 'of', 'key'], [ $i, 'index' ] ],
     });
 
     push @failures, $failure;
@@ -68,7 +67,7 @@ Data::Rx::CoreType::any - the Rx //any type
 
 =head1 VERSION
 
-version 0.200000
+version 0.200001
 
 =head1 AUTHOR
 

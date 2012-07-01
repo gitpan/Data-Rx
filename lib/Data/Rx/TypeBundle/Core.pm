@@ -2,9 +2,9 @@ use strict;
 use warnings;
 package Data::Rx::TypeBundle::Core;
 {
-  $Data::Rx::TypeBundle::Core::VERSION = '0.200000'; # TRIAL
+  $Data::Rx::TypeBundle::Core::VERSION = '0.200001'; # TRIAL
 }
-use base 'Data::Rx::TypeBundle';
+use parent 'Data::Rx::TypeBundle';
 # ABSTRACT: the bundle of core Rx types
 
 use Module::Pluggable::Object;
@@ -39,7 +39,7 @@ Data::Rx::TypeBundle::Core - the bundle of core Rx types
 
 =head1 VERSION
 
-version 0.200000
+version 0.200001
 
 =head1 AUTHOR
 

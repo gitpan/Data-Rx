@@ -2,12 +2,12 @@ use strict;
 use warnings;
 package Data::Rx::CoreType::def;
 {
-  $Data::Rx::CoreType::def::VERSION = '0.200000'; # TRIAL
+  $Data::Rx::CoreType::def::VERSION = '0.200001'; # TRIAL
 }
-use base 'Data::Rx::CoreType';
+use parent 'Data::Rx::CoreType';
 # ABSTRACT: the Rx //def type
 
-sub validate {
+sub assert_valid {
   my ($self, $value) = @_;
 
   return 1 if defined $value;
@@ -32,7 +32,7 @@ Data::Rx::CoreType::def - the Rx //def type
 
 =head1 VERSION
 
-version 0.200000
+version 0.200001
 
 =head1 AUTHOR
 

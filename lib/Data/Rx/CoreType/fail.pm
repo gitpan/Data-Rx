@@ -2,12 +2,12 @@ use strict;
 use warnings;
 package Data::Rx::CoreType::fail;
 {
-  $Data::Rx::CoreType::fail::VERSION = '0.200000'; # TRIAL
+  $Data::Rx::CoreType::fail::VERSION = '0.200001'; # TRIAL
 }
-use base 'Data::Rx::CoreType';
+use parent 'Data::Rx::CoreType';
 # ABSTRACT: the Rx //fail type
 
-sub validate {
+sub assert_valid {
   $_[0]->fail({
     error   => [ qw(fail) ],
     message => "matching reached an always-fail check",
@@ -28,7 +28,7 @@ Data::Rx::CoreType::fail - the Rx //fail type
 
 =head1 VERSION
 
-version 0.200000
+version 0.200001
 
 =head1 AUTHOR
 
