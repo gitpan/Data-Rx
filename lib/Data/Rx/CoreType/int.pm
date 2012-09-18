@@ -2,7 +2,7 @@ use strict;
 use warnings;
 package Data::Rx::CoreType::int;
 {
-  $Data::Rx::CoreType::int::VERSION = '0.200001'; # TRIAL
+  $Data::Rx::CoreType::int::VERSION = '0.200002';
 }
 use parent 'Data::Rx::CoreType::num';
 # ABSTRACT: the Rx //int type
@@ -36,7 +36,7 @@ Data::Rx::CoreType::int - the Rx //int type
 
 =head1 VERSION
 
-version 0.200001
+version 0.200002
 
 =head1 AUTHOR
 

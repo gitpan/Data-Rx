@@ -108,7 +108,10 @@ spec/schemata/str-length.json
 spec/schemata/str-x.json
 spec/schemata/str.json
 spec/spec.json
+t/00-compile.t
+t/000-report-versions-tiny.t
 t/lib/Test/RxTester.pm
 t/spec.t
 t/util-range.t
+xt/release/changes_has_content.t
 xt/release/pod-syntax.t

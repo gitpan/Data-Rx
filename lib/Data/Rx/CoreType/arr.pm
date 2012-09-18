@@ -2,7 +2,7 @@ use strict;
 use warnings;
 package Data::Rx::CoreType::arr;
 {
-  $Data::Rx::CoreType::arr::VERSION = '0.200001'; # TRIAL
+  $Data::Rx::CoreType::arr::VERSION = '0.200002';
 }
 use parent 'Data::Rx::CoreType';
 # ABSTRACT: the Rx //arr type
@@ -84,7 +84,7 @@ Data::Rx::CoreType::arr - the Rx //arr type
 
 =head1 VERSION
 
-version 0.200001
+version 0.200002
 
 =head1 AUTHOR
 

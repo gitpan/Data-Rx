@@ -2,7 +2,7 @@ use strict;
 use warnings;
 package Data::Rx::CoreType::rec;
 {
-  $Data::Rx::CoreType::rec::VERSION = '0.200001'; # TRIAL
+  $Data::Rx::CoreType::rec::VERSION = '0.200002';
 }
 use parent 'Data::Rx::CoreType';
 # ABSTRACT: the Rx //rec type
@@ -127,7 +127,7 @@ Data::Rx::CoreType::rec - the Rx //rec type
 
 =head1 VERSION
 
-version 0.200001
+version 0.200002
 
 =head1 AUTHOR
 

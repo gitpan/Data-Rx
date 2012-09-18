@@ -2,7 +2,7 @@ use strict;
 use warnings;
 package Data::Rx::CoreType::def;
 {
-  $Data::Rx::CoreType::def::VERSION = '0.200001'; # TRIAL
+  $Data::Rx::CoreType::def::VERSION = '0.200002';
 }
 use parent 'Data::Rx::CoreType';
 # ABSTRACT: the Rx //def type
@@ -32,7 +32,7 @@ Data::Rx::CoreType::def - the Rx //def type
 
 =head1 VERSION
 
-version 0.200001
+version 0.200002
 
 =head1 AUTHOR
 

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 package Data::Rx::CoreType::map;
 {
-  $Data::Rx::CoreType::map::VERSION = '0.200001'; # TRIAL
+  $Data::Rx::CoreType::map::VERSION = '0.200002';
 }
 use parent 'Data::Rx::CoreType';
 # ABSTRACT: the Rx //map type
@@ -60,7 +60,7 @@ Data::Rx::CoreType::map - the Rx //map type
 
 =head1 VERSION
 
-version 0.200001
+version 0.200002
 
 =head1 AUTHOR
 

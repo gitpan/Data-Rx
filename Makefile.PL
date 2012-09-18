@@ -12,7 +12,9 @@ my %WriteMakefileArgs = (
   "ABSTRACT" => "perl implementation of Rx schema system",
   "AUTHOR" => "Ricardo SIGNES <rjbs\@cpan.org>",
   "BUILD_REQUIRES" => {
+    "File::Find" => 0,
     "File::Find::Rule" => 0,
+    "File::Temp" => 0,
     "JSON" => 0,
     "Test::Deep::NoTest" => 0,
     "Test::More" => "0.96",
@@ -42,7 +44,7 @@ my %WriteMakefileArgs = (
     "strict" => 0,
     "warnings" => 0
   },
-  "VERSION" => "0.200001",
+  "VERSION" => "0.200002",
   "test" => {
     "TESTS" => "t/*.t"
   }
