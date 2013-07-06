@@ -2,7 +2,7 @@ use strict;
 use warnings;
 package Data::Rx::CoreType::nil;
 {
-  $Data::Rx::CoreType::nil::VERSION = '0.200003';
+  $Data::Rx::CoreType::nil::VERSION = '0.200004';
 }
 use parent 'Data::Rx::CoreType';
 # ABSTRACT: the Rx //nil type
@@ -33,7 +33,7 @@ Data::Rx::CoreType::nil - the Rx //nil type
 
 =head1 VERSION
 
-version 0.200003
+version 0.200004
 
 =head1 AUTHOR
 

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 package Data::Rx::CoreType::bool;
 {
-  $Data::Rx::CoreType::bool::VERSION = '0.200003';
+  $Data::Rx::CoreType::bool::VERSION = '0.200004';
 }
 use parent 'Data::Rx::CoreType';
 # ABSTRACT: the Rx //bool type
@@ -43,7 +43,7 @@ Data::Rx::CoreType::bool - the Rx //bool type
 
 =head1 VERSION
 
-version 0.200003
+version 0.200004
 
 =head1 AUTHOR
 

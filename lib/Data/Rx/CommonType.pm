@@ -2,7 +2,7 @@ use strict;
 use warnings;
 package Data::Rx::CommonType;
 {
-  $Data::Rx::CommonType::VERSION = '0.200003';
+  $Data::Rx::CommonType::VERSION = '0.200004';
 }
 # ABSTRACT: base class for core Rx types
 
@@ -101,7 +101,7 @@ Data::Rx::CommonType - base class for core Rx types
 
 =head1 VERSION
 
-version 0.200003
+version 0.200004
 
 =head1 AUTHOR
 

@@ -2,7 +2,7 @@ use strict;
 use warnings;
 package Data::Rx::FailureSet;
 {
-  $Data::Rx::FailureSet::VERSION = '0.200003';
+  $Data::Rx::FailureSet::VERSION = '0.200004';
 }
 # ABSTRACT: multiple structured failure reports from an Rx checker
 
@@ -142,7 +142,7 @@ Data::Rx::FailureSet - multiple structured failure reports from an Rx checker
 
 =head1 VERSION
 
-version 0.200003
+version 0.200004
 
 =head1 AUTHOR
 
