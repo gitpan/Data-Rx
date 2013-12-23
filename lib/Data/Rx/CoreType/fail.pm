@@ -2,7 +2,7 @@ use strict;
 use warnings;
 package Data::Rx::CoreType::fail;
 {
-  $Data::Rx::CoreType::fail::VERSION = '0.200004';
+  $Data::Rx::CoreType::fail::VERSION = '0.200005';
 }
 use parent 'Data::Rx::CoreType';
 # ABSTRACT: the Rx //fail type
@@ -23,13 +23,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Data::Rx::CoreType::fail - the Rx //fail type
 
 =head1 VERSION
 
-version 0.200004
+version 0.200005
 
 =head1 AUTHOR
 

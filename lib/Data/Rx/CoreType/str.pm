@@ -2,7 +2,7 @@ use strict;
 use warnings;
 package Data::Rx::CoreType::str;
 {
-  $Data::Rx::CoreType::str::VERSION = '0.200004';
+  $Data::Rx::CoreType::str::VERSION = '0.200005';
 }
 use parent 'Data::Rx::CoreType';
 # ABSTRACT: the Rx //str type
@@ -91,13 +91,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Data::Rx::CoreType::str - the Rx //str type
 
 =head1 VERSION
 
-version 0.200004
+version 0.200005
 
 =head1 AUTHOR
 

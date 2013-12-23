@@ -2,7 +2,7 @@ use strict;
 use warnings;
 package Data::Rx::Util;
 {
-  $Data::Rx::Util::VERSION = '0.200004';
+  $Data::Rx::Util::VERSION = '0.200005';
 }
 use Carp ();
 use List::Util ();
@@ -57,13 +57,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Data::Rx::Util - helper routines for Data::Rx
 
 =head1 VERSION
 
-version 0.200004
+version 0.200005
 
 =head1 AUTHOR
 

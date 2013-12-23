@@ -2,7 +2,7 @@ use strict;
 use warnings;
 package Data::Rx::CoreType;
 {
-  $Data::Rx::CoreType::VERSION = '0.200004';
+  $Data::Rx::CoreType::VERSION = '0.200005';
 }
 # ABSTRACT: base class for core Rx types
 use parent 'Data::Rx::CommonType::EasyNew';
@@ -19,13 +19,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Data::Rx::CoreType - base class for core Rx types
 
 =head1 VERSION
 
-version 0.200004
+version 0.200005
 
 =head1 AUTHOR
 
