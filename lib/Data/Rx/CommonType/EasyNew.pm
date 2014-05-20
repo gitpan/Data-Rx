@@ -1,10 +1,8 @@
 use strict;
 use warnings;
 package Data::Rx::CommonType::EasyNew;
-{
-  $Data::Rx::CommonType::EasyNew::VERSION = '0.200005';
-}
 # ABSTRACT: base class for core Rx types, with some defaults
+$Data::Rx::CommonType::EasyNew::VERSION = '0.200006';
 use parent 'Data::Rx::CommonType';
 
 use Carp ();
@@ -33,6 +31,14 @@ sub type { $_[0]->{_type} }
 
 sub rx { $_[0]->{_rx} }
 
+#pod =pod
+#pod
+#pod =head1 NOTE
+#pod
+#pod For examples on how to subclass this, see L<Data::Rx::Manual::CustomTypes>.
+#pod
+#pod =cut
+
 1;
 
 __END__
@@ -47,7 +53,11 @@ Data::Rx::CommonType::EasyNew - base class for core Rx types, with some defaults
 
 =head1 VERSION
 
-version 0.200005
+version 0.200006
+
+=head1 NOTE
+
+For examples on how to subclass this, see L<Data::Rx::Manual::CustomTypes>.
 
 =head1 AUTHOR
 
@@ -55,7 +65,7 @@ Ricardo SIGNES <rjbs@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2013 by Ricardo SIGNES.
+This software is copyright (c) 2014 by Ricardo SIGNES.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

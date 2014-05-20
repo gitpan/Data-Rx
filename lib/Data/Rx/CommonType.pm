@@ -1,11 +1,8 @@
 use strict;
 use warnings;
 package Data::Rx::CommonType;
-{
-  $Data::Rx::CommonType::VERSION = '0.200005';
-}
 # ABSTRACT: base class for core Rx types
-
+$Data::Rx::CommonType::VERSION = '0.200006';
 use Carp ();
 use Scalar::Util ();
 use Data::Rx::Failure;
@@ -103,7 +100,7 @@ Data::Rx::CommonType - base class for core Rx types
 
 =head1 VERSION
 
-version 0.200005
+version 0.200006
 
 =head1 AUTHOR
 
@@ -111,7 +108,7 @@ Ricardo SIGNES <rjbs@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2013 by Ricardo SIGNES.
+This software is copyright (c) 2014 by Ricardo SIGNES.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

@@ -1,11 +1,8 @@
 use strict;
 use warnings;
 package Data::Rx::TypeBundle;
-{
-  $Data::Rx::TypeBundle::VERSION = '0.200005';
-}
 # ABSTRACT: base class for type bundles
-
+$Data::Rx::TypeBundle::VERSION = '0.200006';
 sub prefix_pairs {
   return if ref $_[0] and $_[0]->{no_prefix};
   $_[0]->_prefix_pairs;
@@ -29,7 +26,7 @@ Data::Rx::TypeBundle - base class for type bundles
 
 =head1 VERSION
 
-version 0.200005
+version 0.200006
 
 =head1 AUTHOR
 
@@ -37,7 +34,7 @@ Ricardo SIGNES <rjbs@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2013 by Ricardo SIGNES.
+This software is copyright (c) 2014 by Ricardo SIGNES.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

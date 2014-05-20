@@ -1,14 +1,52 @@
 use strict;
 use warnings;
 package Data::Rx;
-{
-  $Data::Rx::VERSION = '0.200005';
-}
 # ABSTRACT: perl implementation of Rx schema system
-
+$Data::Rx::VERSION = '0.200006';
 use Data::Rx::Util;
 use Data::Rx::TypeBundle::Core;
 
+#pod =head1 SYNOPSIS
+#pod
+#pod   my $rx = Data::Rx->new;
+#pod
+#pod   my $success = {
+#pod     type     => '//rec',
+#pod     required => {
+#pod       location => '//str',
+#pod       status   => { type => '//int', value => 201 },
+#pod     },
+#pod     optional => {
+#pod       comments => {
+#pod         type     => '//arr',
+#pod         contents => '//str',
+#pod       },
+#pod     },
+#pod   };
+#pod
+#pod   my $schema = $rx->make_schema($success);
+#pod
+#pod   my $reply = $json->decode( $agent->get($http_request) );
+#pod
+#pod   die "invalid reply" unless $schema->check($reply);
+#pod
+#pod =head1 COMPLEX CHECKS
+#pod
+#pod Note that a "schema" can be represented either as a name or as a definition.
+#pod In the L</SYNOPSIS> above, note that we have both, '//str' and 
+#pod C<{ type =E<gt> '//int', value =E<gt> 201 }>.  
+#pod With the L<collection types|http://rx.codesimply.com/coretypes.html#collect>
+#pod provided by Rx, you can validate many complex structures.  See L</learn_types>
+#pod for how to teach your Rx schema object about the new types you create.
+#pod
+#pod When required, see L<Data::Rx::Manual::CustomTypes> for details on creating a
+#pod custom type plugin as a Perl module.
+#pod
+#pod =head1 SEE ALSO
+#pod
+#pod L<http://rjbs.manxome.org/rx>
+#pod
+#pod =cut
 
 sub _expand_uri {
   my ($self, $str) = @_;
@@ -27,6 +65,27 @@ sub _expand_uri {
   Carp::croak "couldn't understand Rx type name '$str'";
 }
 
+#pod =method new
+#pod
+#pod   my $rx = Data::Rx->new(\%arg);
+#pod
+#pod This returns a new Data::Rx object.
+#pod
+#pod Valid arguments are:
+#pod
+#pod   prefix        - optional; a hashref of prefix pairs for type shorthand
+#pod   type_plugins  - optional; an arrayref of type or type bundle plugins
+#pod   no_core_types - optional; if true, core type bundle is not loaded
+#pod   sort_keys     - optional; see the sort_keys section.
+#pod
+#pod The prefix hashref should look something like this:
+#pod
+#pod   {
+#pod     'pobox'  => 'tag:pobox.com,1995:rx/core/',
+#pod     'skynet' => 'tag:skynet.mil,1997-08-29:types/rx/',
+#pod   }
+#pod
+#pod =cut
 
 sub new {
   my ($class, $arg) = @_;
@@ -51,6 +110,14 @@ sub new {
   return $self;
 }
 
+#pod =method make_schema
+#pod
+#pod   my $schema = $rx->make_schema($schema);
+#pod
+#pod This returns a new schema checker method for the given Rx input. This object
+#pod will have C<check> and C<assert_valid> methods to test data with.
+#pod
+#pod =cut
 
 sub make_schema {
   my ($self, $schema) = @_;
@@ -81,6 +148,17 @@ sub make_schema {
   return $checker;
 }
 
+#pod =method register_type_plugin
+#pod
+#pod   $rx->register_type_plugin($type_or_bundle);
+#pod
+#pod Given a type plugin, this registers the plugin with the Data::Rx object.
+#pod Bundles are expanded recursively and all their plugins are registered.
+#pod
+#pod Type plugins must have a C<type_uri> method and a C<new_checker> method.
+#pod See L<Data::Rx::Manual::CustomTypes> for details.
+#pod
+#pod =cut
 
 sub register_type_plugin {
   my ($self, $starting_plugin) = @_;
@@ -103,6 +181,27 @@ sub register_type_plugin {
   }
 }
 
+#pod =method learn_type
+#pod
+#pod   $rx->learn_type($uri, $schema);
+#pod
+#pod This defines a new type as a schema composed of other types.
+#pod
+#pod For example:
+#pod
+#pod   $rx->learn_type('tag:www.example.com:rx/person',
+#pod                   { type     => '//rec',
+#pod                     required => {
+#pod                       firstname => '//str',
+#pod                       lastname  => '//str',
+#pod                     },
+#pod                     optional => {
+#pod                       middlename => '//str',
+#pod                     },
+#pod                   },
+#pod                  );
+#pod
+#pod =cut
 
 sub learn_type {
   my ($self, $uri, $schema) = @_;
@@ -116,6 +215,15 @@ sub learn_type {
   $self->{handler}{ $uri } = { schema => $schema };
 }
 
+#pod =method add_prefix
+#pod
+#pod   $rx->add_prefix($name => $prefix_string);
+#pod
+#pod For example:
+#pod
+#pod   $rx->add_prefix('.meta' => 'tag:codesimply.com,2008:rx/meta/');
+#pod
+#pod =cut
 
 sub add_prefix {
   my ($self, $name, $base) = @_;
@@ -126,6 +234,15 @@ sub add_prefix {
   $self->{prefix}{ $name } = $base;
 }
 
+#pod =method sort_keys
+#pod
+#pod   $rx->sort_keys(1);
+#pod
+#pod When sort_keys is enabled, causes Rx checkers for //rec and //map to
+#pod sort the keys before validating.  This results in failures being
+#pod produced in a consistent order.
+#pod
+#pod =cut
 
 sub sort_keys {
   my $self = shift;
@@ -161,7 +278,7 @@ Data::Rx - perl implementation of Rx schema system
 
 =head1 VERSION
 
-version 0.200005
+version 0.200006
 
 =head1 SYNOPSIS
 
@@ -200,7 +317,7 @@ Valid arguments are:
   prefix        - optional; a hashref of prefix pairs for type shorthand
   type_plugins  - optional; an arrayref of type or type bundle plugins
   no_core_types - optional; if true, core type bundle is not loaded
-  sort_keys     - optional; see L</sort_keys>
+  sort_keys     - optional; see the sort_keys section.
 
 The prefix hashref should look something like this:
 
@@ -213,8 +330,8 @@ The prefix hashref should look something like this:
 
   my $schema = $rx->make_schema($schema);
 
-This returns a new schema checker (something with a C<check> method) for the
-given Rx input.
+This returns a new schema checker method for the given Rx input. This object
+will have C<check> and C<assert_valid> methods to test data with.
 
 =head2 register_type_plugin
 
@@ -222,7 +339,9 @@ given Rx input.
 
 Given a type plugin, this registers the plugin with the Data::Rx object.
 Bundles are expanded recursively and all their plugins are registered.
+
 Type plugins must have a C<type_uri> method and a C<new_checker> method.
+See L<Data::Rx::Manual::CustomTypes> for details.
 
 =head2 learn_type
 
@@ -260,6 +379,18 @@ When sort_keys is enabled, causes Rx checkers for //rec and //map to
 sort the keys before validating.  This results in failures being
 produced in a consistent order.
 
+=head1 COMPLEX CHECKS
+
+Note that a "schema" can be represented either as a name or as a definition.
+In the L</SYNOPSIS> above, note that we have both, '//str' and 
+C<{ type =E<gt> '//int', value =E<gt> 201 }>.  
+With the L<collection types|http://rx.codesimply.com/coretypes.html#collect>
+provided by Rx, you can validate many complex structures.  See L</learn_types>
+for how to teach your Rx schema object about the new types you create.
+
+When required, see L<Data::Rx::Manual::CustomTypes> for details on creating a
+custom type plugin as a Perl module.
+
 =head1 SEE ALSO
 
 L<http://rjbs.manxome.org/rx>
@@ -270,7 +401,7 @@ Ricardo SIGNES <rjbs@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2013 by Ricardo SIGNES.
+This software is copyright (c) 2014 by Ricardo SIGNES.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

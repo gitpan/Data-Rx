@@ -1,11 +1,9 @@
 use strict;
 use warnings;
 package Data::Rx::CoreType::int;
-{
-  $Data::Rx::CoreType::int::VERSION = '0.200005';
-}
-use parent 'Data::Rx::CoreType::num';
 # ABSTRACT: the Rx //int type
+$Data::Rx::CoreType::int::VERSION = '0.200006';
+use parent 'Data::Rx::CoreType::num';
 
 sub subname   { 'int' }
 
@@ -39,7 +37,7 @@ Data::Rx::CoreType::int - the Rx //int type
 
 =head1 VERSION
 
-version 0.200005
+version 0.200006
 
 =head1 AUTHOR
 
@@ -47,7 +45,7 @@ Ricardo SIGNES <rjbs@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2013 by Ricardo SIGNES.
+This software is copyright (c) 2014 by Ricardo SIGNES.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
